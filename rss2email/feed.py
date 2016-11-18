@@ -43,6 +43,7 @@ import time as _time
 import urllib.error as _urllib_error
 import urllib.request as _urllib_request
 import uuid as _uuid
+import zlib as _zlib
 import xml.sax as _sax
 import xml.sax.saxutils as _saxutils
 
@@ -407,7 +408,8 @@ class Feed (object):
         elif isinstance(exc, _SOCKET_ERRORS):
             _LOG.error('{}: {}'.format(exc, self))
             warned = True
-        elif isinstance(exc, _feedparser.zlib.error):
+        elif ((hasattr(_feedparser, 'zlib') and isinstance(exc, _feedparser.zlib.error))
+              or isinstance(exc, _zlib.error)):
             _LOG.error('broken compression: {}'.format(self))
             warned = True
         elif isinstance(exc, (IOError, AttributeError)):
